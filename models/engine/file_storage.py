@@ -37,7 +37,7 @@ class FileStorage:
         if obj is None:
             return
         elif obj in __objects:
-            FileStorage.__objects.pop(obj)
+            __objects.pop(obj)
 
     def reload(self):
         """Loads storage dictionary from file"""
