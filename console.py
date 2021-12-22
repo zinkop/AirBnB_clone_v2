@@ -115,36 +115,16 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of given parameters"""
-        class_name = ''
-        name_pattern = r'(?P<name>(?:[a-zA-Z]|_)(?:[a-zA-Z]|\d|_)*)'
-        class_match = re.match(name_pattern, args)
-        obj_kwargs = {}
-        if class_match is not None:
-            class_name = class_match.group('name')
-            str_parameters = args[len(class_name):].strip()
-            parameters = str_parameters.split(' ')
-            str_pattern = r'(?P<t_str>"([^"]|\")*")'
-            float_pattern = r'(?P<t_float>[-+]?\d+\.\d+)'
-            int_pattern = r'(?P<t_int>[-+]?\d+)'
-            param_pattern = '{}=({}|{}|{})'.format(
-                name_pattern,
-                str_pattern,
-                float_pattern,
-                int_pattern
-            )
-            for param in parameters:
-                param_match = re.fullmatch(param_pattern, param)
-                if param_match is not None:
-                    key_name = param_match.group('name')
-                    str_v = param_match.group('t_str')
-                    float_v = param_match.group('t_float')
-                    int_v = param_match.group('t_int')
-                    if float_v is not None:
-                        obj_kwargs[key_name] = float(float_v)
-                    if int_v is not None:
-                        obj_kwargs[key_name] = int(int_v)
-                    if str_v is not None:
-                        obj_kwargs[key_name] = str_v[1:-1].replace('_', ' ')
+        if not args:
+            print("** class name missing **")
+            return
+        elif args not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
+        new_instance = HBNBCommand.classes[args]()
+        storage.save()
+        print(new_instance.id)
+        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
