@@ -35,7 +35,7 @@ class FileStorage:
             
     def delete(self, obj=None):
         if obj is None:
-            return
+            pass
         elif obj in __objects:
             __objects.pop(obj)
 
