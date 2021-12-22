@@ -16,7 +16,7 @@ class FileStorage:
         for obj_id in FileStorage.__objects:
             obj_cls = FileStorage.__objects[obj_id].__class__.__name__
             if cls == obj_cls:
-                storage[obj_id] = FileStorage.__objects[obj_id]
+                storage.append(obj_id)
 
         return storage
 
