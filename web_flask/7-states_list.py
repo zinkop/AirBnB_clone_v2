@@ -1,27 +1,59 @@
 #!/usr/bin/python3
-""" A script to starts a flask web application """
-from models import storage
-from models.state import State
+""" A script that starts a flask web application"""
+
+from models import *
 from flask import Flask, render_template
 app = Flask(__name__)
-# app.jinja_env.trim_blocks = True
-# app.jinja_env.lstrip_blocks = True
+
+
+@app.route('/')
+def index():
+    return "Hello HBNB!"
+
+
+@app.route('/hbnb')
+def hbnb():
+    return "HBNB"
+
+
+@app.route('/c/<string:s>')
+def c(s):
+    new_s = s.replace("_", " ")
+    return "C {}".format(new_s)
+
+
+@app.route('/python', strict_slashes=False)
+@app.route('/python/<string:s>')
+def python(s="is cool"):
+    new_s = s.replace("_", " ")
+    return "Python {}".format(new_s)
+
+
+@app.route('/number/<int:n>')
+def number(n):
+    return "{} is a number".format(n)
+
+
+@app.route('/number_template/<int:n>')
+def number_template(n):
+    return render_template('5-number.html', num=n)
+
+
+@app.route('/number_odd_or_even/<int:n>')
+def number_odd_or_even(n):
+    return render_template('6-number_odd_or_even.html', num=n)
+
+
+@app.route('/states_list')
+def states_list():
+    return render_template('7-states_list.html',
+                           states=storage.all("State"))
 
 
 @app.teardown_appcontext
-def close_db(error):
-    """ Remove the current SQLAlchemy Session """
+def teardown(err):
     storage.close()
 
 
-@app.route('/states_list', strict_slashes=False)
-def states_list():
-    """ displays a HTML page with a list of states """
-    states = storage.all(State).values()
-    states = sorted(states, key=lambda k: k.name)
-    return render_template('7-states_list.html', states=states)
-
-
 if __name__ == "__main__":
-    """ Main Function """
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0')
