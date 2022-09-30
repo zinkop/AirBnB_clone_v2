@@ -6,9 +6,9 @@ from fabric.contrib import files
 import os
 
 
-api.env.hosts = ['142.44.167.235', '144.217.246.199']
+api.env.hosts = ['44.192.81.150', '3.83.35.252']
 api.env.user = 'ubuntu'
-api.env.key_filename = '~/.ssh/holberton'
+api.env.key_filename = '~/.ssh/id_rsa'
 
 
 def do_deploy(archive_path):
